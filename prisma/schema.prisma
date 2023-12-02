@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model items {
+  id            Int @id @default(autoincrement())
+  created_at    DateTime  @default(now())
+  modified_at   DateTime  @updatedAt
+  completed_at  DateTime?
+  due_at        DateTime?
+  title         String
+}
