@@ -1,47 +1,53 @@
-// sample seed.ts
-
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
+
 async function main() {
-  const alice = await prisma.user.upsert({
-    where: { email: 'alice@prisma.io' },
-    update: {},
-    create: {
-      email: 'alice@prisma.io',
-      name: 'Alice',
-      posts: {
-        create: {
-          title: 'Check out Prisma with Next.js',
-          content: 'https://www.prisma.io/nextjs',
-          published: true,
-        },
-      },
-    },
-  })
-  const bob = await prisma.user.upsert({
-    where: { email: 'bob@prisma.io' },
-    update: {},
-    create: {
-      email: 'bob@prisma.io',
-      name: 'Bob',
-      posts: {
+  console.log('starting main')
+
+  const i = await prisma.item.create({
+    data: {
+      title: 'Pay Acme',
+      notes: {
         create: [
           {
-            title: 'Follow Prisma on Twitter',
-            content: 'https://twitter.com/prisma',
-            published: true,
+            body: 'Spoke with Sandy Smith who instructed me to reach out to Kim Kane in the finance department to clarify the amount that needs to be paid',
           },
           {
-            title: 'Follow Nexus on Twitter',
-            content: 'https://twitter.com/nexusgql',
-            published: true,
+            body: 'Kim Kane clarified that the amount to be paid is $5,271.45',
+          },
+        ],
+      },
+      contacts: {
+        create: [
+          {
+            name: 'Kim Kane',
+            phones: {
+              create: [
+                {
+                  phone: '111-111-1111',
+                  phone_type: 'mobile',
+                },
+              ],
+            },
+          },
+          {
+            name: 'Sandy Smith',
+            phones: {
+              create: [
+                {
+                  phone: '222-222-2222',
+                  phone_type: 'mobile',
+                },
+              ],
+            },
           },
         ],
       },
     },
   })
-  console.log({ alice, bob })
+  console.log('i', i)
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect()
